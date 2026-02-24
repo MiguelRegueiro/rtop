@@ -1,0 +1,28 @@
+
+  # optional safety backup of current branch pointer
+  git branch backup-before-history-reset
+
+  # create a brand-new root history
+  git checkout --orphan fresh-main
+
+  # stage everything from current working tree
+  git add -A
+
+  # keep temp files out of the new commit
+  git rm --cached -f src/components/.cpu.rs.kate-swp src/data/collector.rs.backup 2>/dev/null || true
+  rm -f src/components/.cpu.rs.kate-swp src/data/collector.rs.backup
+
+  # create the new first commit
+  git commit -m "Initial commit"
+
+  # replace main with this new history
+  git branch -M main
+
+  # overwrite remote history
+  git push --force-with-lease origin main
+
+
+
+
+
+do this to make it look like the fist commit

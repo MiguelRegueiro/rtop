@@ -1,0 +1,34 @@
+[package]
+name = "rtop"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+nvml-wrapper = "0.11"
+ratatui = "0.28"
+sysinfo = "0.29"
+crossterm = "0.28"
+tokio = { version = "1.0", features = ["full"] }
+hostname = "0.3"
+serde = { version = "1.0", features = ["derive"] }
+toml = "0.8"
+dirs = "5.0"
+chrono = "0.4"
+
+[profile.release]
+lto = true
+codegen-units = 1
+opt-level = "z"        # Optimize for size rather than speed
+panic = "abort"
+strip = true
+debug = false
+overflow-checks = false
+
+# Target-specific optimizations
+[target.'cfg(target_arch = "x86_64")'.dependencies]
+# Using x86-64-v3 enables advanced instruction sets like AVX2, BMI, and others
+# This requires setting RUSTFLAGS="-C target-cpu=x86-64-v3" when building
+
+# Optional: For even smaller binaries, you can use these additional settings
+[profile.release.package."*"]
+opt-level = "z"  # Optimize for size for all dependencies too
